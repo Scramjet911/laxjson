@@ -13,7 +13,7 @@ pub mod __private$$ {
 
 const PRIVATE_TEST: &str = "\
 #[allow(unused_imports)]
-use serde_json::__private$$ as private_test;
+use laxjson::__private$$ as private_test;
 ";
 
 fn main() {

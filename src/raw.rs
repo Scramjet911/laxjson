@@ -29,14 +29,14 @@ use serde::ser::{Serialize, SerializeStruct, Serializer};
 ///
 /// ```toml
 /// [dependencies]
-/// serde_json = { version = "1.0", features = ["raw_value"] }
+/// laxjson = { version = "1.0", features = ["raw_value"] }
 /// ```
 ///
 /// # Example
 ///
 /// ```
 /// use serde::{Deserialize, Serialize};
-/// use serde_json::{Result, value::RawValue};
+/// use laxjson::{Result, value::RawValue};
 ///
 /// #[derive(Deserialize)]
 /// struct Input<'a> {
@@ -53,18 +53,18 @@ use serde::ser::{Serialize, SerializeStruct, Serializer};
 /// // Efficiently rearrange JSON input containing separate "code" and "payload"
 /// // keys into a single "info" key holding an array of code and payload.
 /// //
-/// // This could be done equivalently using serde_json::Value as the type for
+/// // This could be done equivalently using laxjson::Value as the type for
 /// // payload, but &RawValue will perform better because it does not require
 /// // memory allocation. The correct range of bytes is borrowed from the input
 /// // data and pasted verbatim into the output.
 /// fn rearrange(input: &str) -> Result<String> {
-///     let input: Input = serde_json::from_str(input)?;
+///     let input: Input = laxjson::from_str(input)?;
 ///
 ///     let output = Output {
 ///         info: (input.code, input.payload),
 ///     };
 ///
-///     serde_json::to_string(&output)
+///     laxjson::to_string(&output)
 /// }
 ///
 /// fn main() -> Result<()> {
@@ -82,7 +82,7 @@ use serde::ser::{Serialize, SerializeStruct, Serializer};
 ///
 /// ```
 /// # use serde::Deserialize;
-/// # use serde_json::value::RawValue;
+/// # use laxjson::value::RawValue;
 /// #
 /// #[derive(Deserialize)]
 /// struct SomeStruct<'a> {
@@ -92,20 +92,20 @@ use serde::ser::{Serialize, SerializeStruct, Serializer};
 /// ```
 ///
 /// The borrowed form is suitable when deserializing through
-/// [`serde_json::from_str`] and [`serde_json::from_slice`] which support
+/// [`laxjson::from_str`] and [`laxjson::from_slice`] which support
 /// borrowing from the input data without memory allocation.
 ///
-/// When deserializing through [`serde_json::from_reader`] you will need to use
+/// When deserializing through [`laxjson::from_reader`] you will need to use
 /// the boxed form of `RawValue` instead. This is almost as efficient but
 /// involves buffering the raw value from the I/O stream into memory.
 ///
-/// [`serde_json::from_str`]: crate::from_str
-/// [`serde_json::from_slice`]: crate::from_slice
-/// [`serde_json::from_reader`]: crate::from_reader
+/// [`laxjson::from_str`]: crate::from_str
+/// [`laxjson::from_slice`]: crate::from_slice
+/// [`laxjson::from_reader`]: crate::from_reader
 ///
 /// ```
 /// # use serde::Deserialize;
-/// # use serde_json::value::RawValue;
+/// # use laxjson::value::RawValue;
 /// #
 /// #[derive(Deserialize)]
 /// struct SomeStruct {
@@ -177,7 +177,7 @@ impl RawValue {
 
     /// Convert an owned `String` of JSON data to an owned `RawValue`.
     ///
-    /// This function is equivalent to `serde_json::from_str::<Box<RawValue>>`
+    /// This function is equivalent to `laxjson::from_str::<Box<RawValue>>`
     /// except that we avoid an allocation and memcpy if both of the following
     /// are true:
     ///
@@ -214,16 +214,16 @@ impl RawValue {
     /// # Example
     ///
     /// ```
-    /// use serde_json::value::RawValue;
+    /// use laxjson::value::RawValue;
     ///
-    /// let json = serde_json::to_string(&[1, 2, 3])?;
+    /// let json = laxjson::to_string(&[1, 2, 3])?;
     ///
-    /// // SAFETY: `json` was produced by serde_json's own serializer, so it is
+    /// // SAFETY: `json` was produced by laxjson's own serializer, so it is
     /// // a single well-formed JSON value without surrounding whitespace.
     /// let raw = unsafe { RawValue::from_string_unchecked(json) };
     ///
     /// assert_eq!(raw.get(), "[1,2,3]");
-    /// # Ok::<(), serde_json::Error>(())
+    /// # Ok::<(), laxjson::Error>(())
     /// ```
     pub unsafe fn from_string_unchecked(json: String) -> Box<Self> {
         debug_assert!(
@@ -240,7 +240,7 @@ impl RawValue {
     ///
     /// ```
     /// use serde::Deserialize;
-    /// use serde_json::{Result, value::RawValue};
+    /// use laxjson::{Result, value::RawValue};
     ///
     /// #[derive(Deserialize)]
     /// struct Response<'a> {
@@ -250,7 +250,7 @@ impl RawValue {
     /// }
     ///
     /// fn process(input: &str) -> Result<()> {
-    ///     let response: Response = serde_json::from_str(input)?;
+    ///     let response: Response = laxjson::from_str(input)?;
     ///
     ///     let payload = response.payload.get();
     ///     if payload.starts_with('{') {
@@ -293,7 +293,7 @@ impl From<Box<RawValue>> for Box<str> {
 ///
 /// // Local crate
 /// use serde::Serialize;
-/// use serde_json::value::{to_raw_value, RawValue};
+/// use laxjson::value::{to_raw_value, RawValue};
 ///
 /// #[derive(Serialize)]
 /// struct MyExtraData {
@@ -307,8 +307,8 @@ impl From<Box<RawValue>> for Box<str> {
 ///     extra_data: to_raw_value(&MyExtraData { a: 1, b: 2 }).unwrap(),
 /// };
 /// # assert_eq!(
-/// #     serde_json::to_value(my_thing).unwrap(),
-/// #     serde_json::json!({
+/// #     laxjson::to_value(my_thing).unwrap(),
+/// #     laxjson::json!({
 /// #         "foo": "FooVal",
 /// #         "bar": null,
 /// #         "extra_data": { "a": 1, "b": 2 }
@@ -328,7 +328,7 @@ impl From<Box<RawValue>> for Box<str> {
 /// let mut map = BTreeMap::new();
 /// map.insert(vec![32, 64], "x86");
 ///
-/// println!("{}", serde_json::value::to_raw_value(&map).unwrap_err());
+/// println!("{}", laxjson::value::to_raw_value(&map).unwrap_err());
 /// ```
 #[cfg_attr(docsrs, doc(cfg(feature = "raw_value")))]
 pub fn to_raw_value<T>(value: &T) -> Result<Box<RawValue>, Error>

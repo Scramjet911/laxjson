@@ -1,7 +1,7 @@
-/// Construct a `serde_json::Value` from a JSON literal.
+/// Construct a `laxjson::Value` from a JSON literal.
 ///
 /// ```
-/// # use serde_json::json;
+/// # use laxjson::json;
 /// #
 /// let value = json!({
 ///     "code": 200,
@@ -24,7 +24,7 @@
 /// map with non-string keys, the `json!` macro will panic.
 ///
 /// ```
-/// # use serde_json::json;
+/// # use laxjson::json;
 /// #
 /// let code = 200;
 /// let features = vec!["serde", "json"];
@@ -41,7 +41,7 @@
 /// Trailing commas are allowed inside both arrays and objects.
 ///
 /// ```
-/// # use serde_json::json;
+/// # use laxjson::json;
 /// #
 /// let value = json!([
 ///     "notice",

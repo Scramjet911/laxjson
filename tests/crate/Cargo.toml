@@ -8,7 +8,7 @@ publish = false
 path = "test.rs"
 
 [dependencies]
-serde_json = { path = "../..", default-features = false }
+serde_json = { path = "../..", package = "laxjson", default-features = false }
 
 [features]
 default = ["std"]

@@ -1,5 +1,5 @@
 [package]
-name = "serde_json-fuzz"
+name = "laxjson-fuzz"
 version = "0.0.0"
 edition = "2021"
 publish = false
@@ -9,7 +9,7 @@ cargo-fuzz = true
 
 [dependencies]
 libfuzzer-sys = "0.4"
-serde_json = { path = ".." }
+laxjson = { path = ".." }
 
 [[bin]]
 name = "from_slice"

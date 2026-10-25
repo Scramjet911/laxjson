@@ -174,7 +174,7 @@ impl Number {
     /// numbers.
     ///
     /// ```
-    /// # use serde_json::Number;
+    /// # use laxjson::Number;
     /// #
     /// assert!(Number::from_f64(256.0).is_some());
     ///
@@ -224,11 +224,11 @@ impl Number {
     }
 
     /// Converts an `i128` to a `Number`. Numbers smaller than i64::MIN or
-    /// larger than u64::MAX can only be represented in `Number` if serde_json's
+    /// larger than u64::MAX can only be represented in `Number` if laxjson's
     /// "arbitrary_precision" feature is enabled.
     ///
     /// ```
-    /// # use serde_json::Number;
+    /// # use laxjson::Number;
     /// #
     /// assert!(Number::from_i128(256).is_some());
     /// ```
@@ -253,11 +253,11 @@ impl Number {
     }
 
     /// Converts a `u128` to a `Number`. Numbers greater than u64::MAX can only
-    /// be represented in `Number` if serde_json's "arbitrary_precision" feature
+    /// be represented in `Number` if laxjson's "arbitrary_precision" feature
     /// is enabled.
     ///
     /// ```
-    /// # use serde_json::Number;
+    /// # use laxjson::Number;
     /// #
     /// assert!(Number::from_u128(256).is_some());
     /// ```
@@ -281,7 +281,7 @@ impl Number {
 
     /// Returns the JSON representation that this Number was parsed from.
     ///
-    /// When parsing with serde_json's `arbitrary_precision` feature enabled,
+    /// When parsing with laxjson's `arbitrary_precision` feature enabled,
     /// positive exponents are normalized to include an explicit `+` sign so
     /// that `1e140` becomes `1e+140`.
     ///
@@ -290,7 +290,7 @@ impl Number {
     /// number.
     ///
     /// ```
-    /// # use serde_json::Number;
+    /// # use laxjson::Number;
     /// for value in [
     ///     "7",
     ///     "12.34",
@@ -299,7 +299,7 @@ impl Number {
     ///     "343412345678910111213141516171819202122232425262728293034",
     ///     "-343412345678910111213141516171819202122232425262728293031",
     /// ] {
-    ///     let number: Number = serde_json::from_str(value).unwrap();
+    ///     let number: Number = laxjson::from_str(value).unwrap();
     ///     assert_eq!(number.as_str(), value);
     /// }
     /// ```

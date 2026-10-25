@@ -1,5 +1,7 @@
 #![allow(clippy::uninlined_format_args)]
 
+extern crate laxjson as serde_json;
+
 use indoc::indoc;
 use serde_json::{json, Number, Value};
 

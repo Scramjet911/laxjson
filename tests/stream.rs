@@ -1,5 +1,7 @@
 #![allow(clippy::assertions_on_result_states)]
 
+extern crate laxjson as serde_json;
+
 use serde_json::{json, Deserializer, Value};
 
 // Rustfmt issue https://github.com/rust-lang-nursery/rustfmt/issues/2740

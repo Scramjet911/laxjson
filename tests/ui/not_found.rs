@@ -1,4 +1,4 @@
-use serde_json::json;
+use laxjson::json;
 
 fn main() {
     json!({ "a" : x });

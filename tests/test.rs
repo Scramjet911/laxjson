@@ -19,6 +19,8 @@
     clippy::zero_sized_map_values
 )]
 
+extern crate laxjson as serde_json;
+
 include!(concat!(env!("OUT_DIR"), "/private_test.rs"));
 
 #[macro_use]
