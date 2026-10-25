@@ -1,14 +1,29 @@
 [package]
 name = "laxjson"
-version = "0.1.0"
+version = "1.0.0"
 categories = ["encoding", "parser-implementations", "no-std"]
 description = "Fork of serde_json (https://github.com/serde-rs/json) that accepts comments and trailing commas"
 documentation = "https://docs.rs/laxjson"
 edition = "2021"
 keywords = ["json", "jsonc", "serde", "comments", "trailing-comma"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/Scramjet911/serde-jsonrc"
+repository = "https://github.com/Scramjet911/laxjson"
 rust-version = "1.71"
+exclude = [".github", "scripts", "CONTRIBUTING.md"]
+
+[package.metadata.docs.rs]
+features = ["preserve_order", "raw_value", "unbounded_depth"]
+targets = ["x86_64-unknown-linux-gnu"]
+rustdoc-args = [
+    "--generate-link-to-definition",
+    "--generate-macro-expansion",
+    "--extern-html-root-url=core=https://doc.rust-lang.org",
+    "--extern-html-root-url=alloc=https://doc.rust-lang.org",
+    "--extern-html-root-url=std=https://doc.rust-lang.org",
+]
+
+[package.metadata.playground]
+features = ["float_roundtrip", "raw_value", "unbounded_depth"]
 
 [dependencies]
 foldhash = { version = "0.2", optional = true, default-features = false }
@@ -31,20 +46,6 @@ serde_bytes = "0.11.10"
 serde_derive = "1.0.166"
 serde_stacker = "0.1.8"
 trybuild = { version = "1.0.108", features = ["diff"] }
-
-[package.metadata.docs.rs]
-features = ["preserve_order", "raw_value", "unbounded_depth"]
-targets = ["x86_64-unknown-linux-gnu"]
-rustdoc-args = [
-    "--generate-link-to-definition",
-    "--generate-macro-expansion",
-    "--extern-html-root-url=core=https://doc.rust-lang.org",
-    "--extern-html-root-url=alloc=https://doc.rust-lang.org",
-    "--extern-html-root-url=std=https://doc.rust-lang.org",
-]
-
-[package.metadata.playground]
-features = ["float_roundtrip", "raw_value", "unbounded_depth"]
 
 
 ### FEATURES #################################################################

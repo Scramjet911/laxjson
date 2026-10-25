@@ -1,2 +1,5 @@
 /target/
 /Cargo.lock
+
+CLAUDE.local.md
+.env

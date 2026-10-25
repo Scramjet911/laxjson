@@ -1,4 +1,9 @@
-//! # Serde JSON
+//! # laxjson
+//!
+//! A fork of [serde_json](https://github.com/serde-rs/json) that also accepts
+//! `//` and `/* */` comments and trailing commas in arrays and objects.
+//! Serialization is unchanged. Comment and comma handling follows
+//! [bolinfest/serde-jsonrc](https://github.com/bolinfest/serde-jsonrc).
 //!
 //! JSON is a ubiquitous open-standard format that uses human-readable text to
 //! transmit data objects consisting of key-value pairs.
@@ -299,7 +304,7 @@
 //! [macro]: crate::json
 //! [`serde-json-core`]: https://github.com/rust-embedded-community/serde-json-core
 
-#![doc(html_root_url = "https://docs.rs/laxjson/1.0.154")]
+#![doc(html_root_url = "https://docs.rs/laxjson/1.0.0")]
 // Ignored clippy lints
 #![allow(
     clippy::collapsible_else_if,
