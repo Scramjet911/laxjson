@@ -258,10 +258,45 @@ impl<'de, R: Read<'de>> Deserializer<R> {
                 Some(b' ' | b'\n' | b'\t' | b'\r') => {
                     self.eat_char();
                 }
+                Some(b'/') => {
+                    tri!(self.skip_comment());
+                }
                 other => {
                     return Ok(other);
                 }
             }
+        }
+    }
+
+    /// Skips a `//` or `/* */` comment. Block comments do not nest.
+    #[cold]
+    fn skip_comment(&mut self) -> Result<()> {
+        self.eat_char();
+        match tri!(self.peek()) {
+            Some(b'/') => loop {
+                // Leave the line break for `parse_whitespace`.
+                match tri!(self.peek()) {
+                    Some(b'\n' | b'\r') | None => return Ok(()),
+                    Some(_) => self.eat_char(),
+                }
+            },
+            Some(b'*') => {
+                self.eat_char();
+                loop {
+                    match tri!(self.next_char()) {
+                        // Only eat the `/`, so `**/` still closes the comment.
+                        Some(b'*') if tri!(self.peek()) == Some(b'/') => {
+                            self.eat_char();
+                            return Ok(());
+                        }
+                        Some(_) => {}
+                        None => {
+                            return Err(self.peek_error(ErrorCode::EofWhileParsingBlockComment));
+                        }
+                    }
+                }
+            }
+            _ => Err(self.peek_error(ErrorCode::ExpectedCommentSlashOrStar)),
         }
     }
 
@@ -2427,7 +2462,10 @@ where
 
     fn peek_end_of_value(&mut self) -> Result<()> {
         match tri!(self.de.peek()) {
-            Some(b' ' | b'\n' | b'\t' | b'\r' | b'"' | b'[' | b']' | b'{' | b'}' | b',' | b':')
+            Some(
+                b' ' | b'\n' | b'\t' | b'\r' | b'"' | b'[' | b']' | b'{' | b'}' | b',' | b':'
+                | b'/',
+            )
             | None => Ok(()),
             Some(_) => {
                 let position = self.de.read.peek_position();

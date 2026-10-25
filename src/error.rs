@@ -58,8 +58,10 @@ impl Error {
             ErrorCode::EofWhileParsingList
             | ErrorCode::EofWhileParsingObject
             | ErrorCode::EofWhileParsingString
-            | ErrorCode::EofWhileParsingValue => Category::Eof,
+            | ErrorCode::EofWhileParsingValue
+            | ErrorCode::EofWhileParsingBlockComment => Category::Eof,
             ErrorCode::ExpectedColon
+            | ErrorCode::ExpectedCommentSlashOrStar
             | ErrorCode::ExpectedListCommaOrEnd
             | ErrorCode::ExpectedObjectCommaOrEnd
             | ErrorCode::ExpectedSomeIdent
@@ -252,8 +254,14 @@ pub(crate) enum ErrorCode {
     /// EOF while parsing a JSON value.
     EofWhileParsingValue,
 
+    /// EOF while parsing a `/* */` comment.
+    EofWhileParsingBlockComment,
+
     /// Expected this character to be a `':'`.
     ExpectedColon,
+
+    /// Expected `/` or `*` after a `/`.
+    ExpectedCommentSlashOrStar,
 
     /// Expected this character to be either a `','` or a `']'`.
     ExpectedListCommaOrEnd,
@@ -355,7 +363,11 @@ impl Display for ErrorCode {
             ErrorCode::EofWhileParsingObject => f.write_str("EOF while parsing an object"),
             ErrorCode::EofWhileParsingString => f.write_str("EOF while parsing a string"),
             ErrorCode::EofWhileParsingValue => f.write_str("EOF while parsing a value"),
+            ErrorCode::EofWhileParsingBlockComment => {
+                f.write_str("EOF while parsing a block comment")
+            }
             ErrorCode::ExpectedColon => f.write_str("expected `:`"),
+            ErrorCode::ExpectedCommentSlashOrStar => f.write_str("expected `/` or `*` after `/`"),
             ErrorCode::ExpectedListCommaOrEnd => f.write_str("expected `,` or `]`"),
             ErrorCode::ExpectedObjectCommaOrEnd => f.write_str("expected `,` or `}`"),
             ErrorCode::ExpectedSomeIdent => f.write_str("expected ident"),
