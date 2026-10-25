@@ -76,7 +76,6 @@ impl Error {
             | ErrorCode::ExpectedNumericKey
             | ErrorCode::FloatKeyMustBeFinite
             | ErrorCode::LoneLeadingSurrogateInHexEscape
-            | ErrorCode::TrailingComma
             | ErrorCode::TrailingCharacters
             | ErrorCode::UnexpectedEndOfHexEscape
             | ErrorCode::RecursionLimitExceeded => Category::Syntax,
@@ -305,9 +304,6 @@ pub(crate) enum ErrorCode {
     /// Lone leading surrogate in hex escape.
     LoneLeadingSurrogateInHexEscape,
 
-    /// JSON has a comma after the last value in an array or map.
-    TrailingComma,
-
     /// JSON has non-whitespace trailing characters after the value.
     TrailingCharacters,
 
@@ -390,7 +386,6 @@ impl Display for ErrorCode {
             ErrorCode::LoneLeadingSurrogateInHexEscape => {
                 f.write_str("lone leading surrogate in hex escape")
             }
-            ErrorCode::TrailingComma => f.write_str("trailing comma"),
             ErrorCode::TrailingCharacters => f.write_str("trailing characters"),
             ErrorCode::UnexpectedEndOfHexEscape => f.write_str("unexpected end of hex escape"),
             ErrorCode::RecursionLimitExceeded => f.write_str("recursion limit exceeded"),
